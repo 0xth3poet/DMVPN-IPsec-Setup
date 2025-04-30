@@ -62,11 +62,11 @@ RABAT      15.0.0.2/30  172.16.0.5     192.168.5.0/24
 ```
 Clone the repository:
 
-~$ git clone https://github.com/0xth3poet/DMVPN-TP.git
+~$ git clone https://github.com/0xth3poet/DMVPN-IPsec-Setup.git
 
 Or download manually:
 
-https://github.com/0xth3poet/DMVPN-TP/blob/main/DMVPNxONCF-lab.zip
+https://github.com/0xth3poet/DMVPN-IPsec-Setup/blob/main/_Exports_unetlab_export-20250430-212957.zip
 
 ```
 
