@@ -2,11 +2,32 @@
 
 This lab simulates a real-world deployment of **DMVPN Phase 3 (Dynamic Multipoint VPN)** using a fictional scenario involving the Moroccan transportation company **ONCF**. The goal is to provide hands-on experience with configuring a scalable and secure WAN solution over the Internet, utilizing technologies such as **GRE, NHRP, IPSec, and OSPF**.
 
+
+
+
+
 > **Disclaimer:** The ONCF company is used strictly as an example in this educational context. This lab has no affiliation with ONCF and does not reflect any real infrastructure or implementation by the organization.
 
+
+
 This lab is intended for networking students or anyone interested in learning how DMVPN Phase 3 works in a multi-branch topology using a central hub and spoke routers. The configuration is tested in **EVE-NG** and includes **full tunnel, IPSec encryption, and OSPF dynamic routing**.
-**Author:** _abderrafik (th3poet)_  
+
+
+
+
+
+
+
+**Author:** _abderrafik (th3poet)
 **Date:** _April 2025_
+
+
+
+
+
+
+
+
 
 ## **Scenario**
 
@@ -32,6 +53,7 @@ RABAT      15.0.0.2/30  172.16.0.5     192.168.5.0/24
 ```
 
 ---
+
 ## **Lab Setup Instructions**
 
 1. Download Lab Files
@@ -47,20 +69,47 @@ https://github.com/0xth3poet/DMVPN-TP/blob/main/DMVPNxONCF-lab.zip
 
 ```
 
-![[Untitled design 1.png]]
+![image-20250430230141152](https://github.com/0xth3poet/DMVPN-TP/blob/main/Untitled%20design.png)
+
+
+
+
+
+
+
+
+
+
+
 ## Upload  lab to EVE-NG
 
-![[1.png]]
+![image-20250430230313020](https://github.com/0xth3poet/DMVPN-TP/blob/main/1.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Et Voilà 
 
-![[Pasted image 20250429074711.png]]
+![image-20250430230118748](https://github.com/0xth3poet/DMVPN-TP/blob/main/image-20250430230118748.png)
+
 ## **Configuration time**
 
 ### Default Route Configuration:
-we use default route (already configurate on the lab )
+
+We are using a default route with the ISP router (already configured in the lab)
 
 ```
-
 CASA_HUB(config)#ip route 0.0.0.0 0.0.0.0 fa0/0
 
 SPOKE_TANGER(config)#ip route 0.0.0.0 0.0.0.0 fa0/1
@@ -107,6 +156,7 @@ ip nhrp shortcut
 ```
 
 **Spoke Configuration (R-FES)**
+
 ```
 interface tunnel0
 ip address 172.16.0.3 255.255.255.0
@@ -122,6 +172,7 @@ ip nhrp shortcut
 ```
 
 **Spoke Configuration (R-MARRAKECH)**
+
 ```
 interface tunnel0
 ip address 172.16.0.4 255.255.255.0
@@ -137,6 +188,7 @@ ip nhrp shortcut
 ```
 
 **Spoke Configuration (R-RABAT)**
+
 ```
 interface tunnel0
 ip address 172.16.0.5 255.255.255.0
@@ -181,6 +233,7 @@ crypto ipsec profile prof-dmvpn
 interface tunnel0 
  tunnel protection ipsec profile prof-dmvpn 
 ```
+
 ##  **Verification Commands**
 
 ```
@@ -191,6 +244,7 @@ show crypto ipsec profile
 ## **Routing with OSPF**
 
 **HUB Configuration (R-CASA)**
+
 ```
 router ospf 1
  network 172.16.0.0 0.0.0.255 area 0
@@ -198,6 +252,7 @@ router ospf 1
 ```
 
 **SPOKE Configuration (R-TANGER)**
+
 ```
 router ospf 1
 network 172.16.0.0 0.0.0.255 area 0
@@ -205,6 +260,7 @@ network 192.168.2.0 0.0.0.255 area 0
 ```
 
 **SPOKE Configuration (R-FES)**
+
 ```
 router ospf 1
 network 172.16.0.0 0.0.0.255 area 0
@@ -212,6 +268,7 @@ network 192.168.3.0 0.0.0.255 area 0
 ```
 
 **SPOKE Configuration (R-MARRAKECH)**
+
 ```
 router ospf 1
 network 172.16.0.0 0.0.0.255 area 0
@@ -219,10 +276,23 @@ network 192.168.4.0 0.0.0.255 area 0
 ```
 
 **SPOKE Configuration (R-RABAT)**
+
 ```
 router ospf 1
 network 172.16.0.0 0.0.0.255 area 0
 network 192.168.5.0 0.0.0.255 area 0
+```
+
+## **Final Verification**
+
+```
+From FES, ping RABAT LAN: 
+
+SPOKE_FES(config)#do ping 192.168.5.1
+
+From RABAT, ping TANGER LAN:
+
+SPOKE_RABAT(config)#do ping 192.168.2.1
 ```
 
 ## **Traffic Analysis**
